@@ -1,7 +1,8 @@
 # Use Node.js 20 Alpine as base image
 FROM node:20-alpine
 
-RUN apk add --no-cache openssl1.1-compat
+# Instale o OpenSSL e compatibilidade com libssl1.1
+RUN apk add --no-cache openssl1.1 || apk add --no-cache openssl
 
 # Set working directory
 WORKDIR /app
