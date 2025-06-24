@@ -17,10 +17,85 @@ api_saps/
 ├── prisma/
 │   └── schema.prisma            # Schema do banco de dados
 ├── package.json
+├── Dockerfile                   # Configuração do Docker
+├── docker-compose.yml          # Orquestração dos serviços
 └── README.md
 ```
 
-## 🚀 Instalação
+## 🐳 Docker
+
+### Usando Docker Compose (Recomendado)
+
+A forma mais fácil de executar a aplicação é usando Docker Compose, que irá configurar automaticamente o PostgreSQL e a API:
+
+1. **Clone o repositório e navegue até a pasta:**
+```bash
+cd api_saps
+```
+
+2. **Configure as variáveis de ambiente:**
+Crie um arquivo `.env` na raiz do projeto:
+```env
+DATABASE_URL="postgresql://saps_user:saps_password@postgres:5432/saps_game?schema=public"
+JWT_SECRET="your-super-secret-jwt-key-here"
+PORT=3000
+```
+
+3. **Execute com Docker Compose:**
+```bash
+# Construir e iniciar os serviços
+docker-compose up --build
+
+# Para executar em background
+docker-compose up -d --build
+
+# Para parar os serviços
+docker-compose down
+
+# Para parar e remover volumes (cuidado: apaga os dados do banco)
+docker-compose down -v
+```
+
+4. **Acesse a aplicação:**
+- API: http://localhost:3000
+- Health Check: http://localhost:3000/health
+- PostgreSQL: localhost:5432
+
+### Usando Docker apenas para a API
+
+Se você já tem um PostgreSQL rodando localmente:
+
+1. **Construa a imagem:**
+```bash
+docker build -t saps-api .
+```
+
+2. **Execute o container:**
+```bash
+docker run -p 3000:3000 \
+  -e DATABASE_URL="postgresql://username:password@host.docker.internal:5432/saps_game" \
+  -e JWT_SECRET="your-secret-key" \
+  saps-api
+```
+
+### Comandos Docker úteis
+
+```bash
+# Ver logs dos containers
+docker-compose logs -f api
+
+# Executar comandos dentro do container
+docker-compose exec api npm run db:migrate
+docker-compose exec api npm run db:seed
+
+# Reconstruir apenas a API
+docker-compose build api
+
+# Ver status dos serviços
+docker-compose ps
+```
+
+## 🚀 Instalação Local
 
 1. **Instale as dependências:**
 ```bash
