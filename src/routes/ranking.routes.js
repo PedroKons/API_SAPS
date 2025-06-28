@@ -18,6 +18,11 @@ router.get('/leaderboard', async (req, res) => {
         score: true,
         createdAt: true
       },
+      where: {
+        username: {
+          not: 'ADMIN'
+        }
+      },
       orderBy: {
         score: 'desc'
       },
@@ -53,6 +58,11 @@ router.get('/my-position', async (req, res) => {
       select: {
         id: true,
         score: true
+      },
+      where: {
+        username: {
+          not: 'ADMIN'
+        }
       },
       orderBy: {
         score: 'desc'
@@ -120,6 +130,11 @@ router.put('/update-score', async (req, res) => {
         id: true,
         score: true
       },
+      where: {
+        username: {
+          not: 'ADMIN'
+        }
+      },
       orderBy: {
         score: 'desc'
       }
@@ -179,6 +194,11 @@ router.post('/add-points', async (req, res) => {
         id: true,
         score: true
       },
+      where: {
+        username: {
+          not: 'ADMIN'
+        }
+      },
       orderBy: {
         score: 'desc'
       }
@@ -218,13 +238,24 @@ router.get('/full-ranking', async (req, res) => {
           score: true,
           createdAt: true
         },
+        where: {
+          username: {
+            not: 'ADMIN'
+          }
+        },
         orderBy: {
           score: 'desc'
         },
         skip,
         take: parseInt(limit)
       }),
-      prisma.user.count()
+      prisma.user.count({
+        where: {
+          username: {
+            not: 'ADMIN'
+          }
+        }
+      })
     ]);
 
     // Adicionar posição no ranking

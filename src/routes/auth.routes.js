@@ -11,6 +11,11 @@ router.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
+    // Check if username is ADMIN
+    if (username === 'ADMIN') {
+      return res.status(400).json({ message: 'Username ADMIN is not allowed!' });
+    }
+
     // Check if user already exists
     const userExists = await prisma.user.findUnique({
       where: { email }
@@ -76,6 +81,7 @@ router.post('/login', async (req, res) => {
     );
 
     res.json({
+      flag: user.username == "ADMIN" ? true : false,
       message: 'Login successful!',
       token,
       user: {

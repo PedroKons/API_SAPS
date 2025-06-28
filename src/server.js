@@ -44,10 +44,6 @@ async function startServer() {
 
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
-      console.log(`Health check: http://localhost:${PORT}/health`);
-      console.log(`Auth endpoints: http://localhost:${PORT}/api/auth`);
-      console.log(`Word endpoints: http://localhost:${PORT}/api/words`);
-      console.log(`Ranking endpoints: http://localhost:${PORT}/api/ranking`);
     });
   } catch (error) {
     console.error('Unable to connect to the database:', error);
